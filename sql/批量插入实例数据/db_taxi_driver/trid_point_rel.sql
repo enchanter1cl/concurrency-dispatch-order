@@ -1,0 +1,10 @@
+INSERT INTO `trid_point_rel`(`trid`, `point`, `sid`, `tid`) VALUES (40, '[    {        \"location\":\"116.38,39.97\",        \"locatetime\":1680609742000    }]', 940397, 694412473);
+INSERT INTO `trid_point_rel`(`trid`, `point`, `sid`, `tid`) VALUES (40, '[    {        \"location\":\"116.39,39.98\",        \"locatetime\":1680609742000    }]', 940397, 694412473);
+INSERT INTO `trid_point_rel`(`trid`, `point`, `sid`, `tid`) VALUES (40, '[    {        \"location\":\"116.40,39.99\",        \"locatetime\":1680609742000    }]', 940397, 694412473);
+INSERT INTO `trid_point_rel`(`trid`, `point`, `sid`, `tid`) VALUES (40, '[    {        \"location\":\"116.41,40.00\",        \"locatetime\":1680609742000    }]', 940397, 694412473);
+INSERT INTO `trid_point_rel`(`trid`, `point`, `sid`, `tid`) VALUES (40, '[    {        \"location\":\"116.44,40.03\",        \"locatetime\":1680609742000    }]', 940397, 694412473);
+INSERT INTO `trid_point_rel`(`trid`, `point`, `sid`, `tid`) VALUES (40, '[    {        \"location\":\"116.50,40.23\",        \"locatetime\":1680609742000    }]', 940397, 694412473);
+INSERT INTO `trid_point_rel`(`trid`, `point`, `sid`, `tid`) VALUES (80, '[    {        \"location\":\"116.3301,36.1001\",        \"locatetime\":1680609742000    }]', 940397, 694700701);
+INSERT INTO `trid_point_rel`(`trid`, `point`, `sid`, `tid`) VALUES (80, '[    {        \"location\":\"116.3311,36.1011\",        \"locatetime\":1684820081000    }]', 940397, 694700701);
+INSERT INTO `trid_point_rel`(`trid`, `point`, `sid`, `tid`) VALUES (80, '[    {        \"location\":\"116.41905,39.897927\",        \"locatetime\":1684820081000    }]', 940397, 694700701);
+INSERT INTO `trid_point_rel`(`trid`, `point`, `sid`, `tid`) VALUES (80, '[    {        \"location\":\"116.41905,39.897927\",        \"locatetime\":1684820722000    }]', 940397, 694700701);
