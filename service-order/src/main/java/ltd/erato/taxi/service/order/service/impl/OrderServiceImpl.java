@@ -7,6 +7,8 @@ import ltd.erato.taxi.service.order.entity.Order;
 import ltd.erato.taxi.service.order.dao.OrderDao;
 import ltd.erato.taxi.service.order.remote.SvcMapClient;
 import ltd.erato.taxi.service.order.service.OrderService;
+import org.redisson.api.RLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
@@ -28,6 +30,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     SvcMapClient svcMapClient;
+
+    @Autowired
+    RedissonClient redissonClient;
 
     /**
      * 通过ID查询单条数据
@@ -112,7 +117,12 @@ public class OrderServiceImpl implements OrderService {
           /* 1 终端是否有进行中的订单 */
         List<Long> availableDriverIds = driverIds.stream()
                 .filter(driverId -> {
-            boolean idleFlag = isDriverOrderGoingOn(driverId) == 0;
+                    /* redisson 分布式锁 */
+                    String lockKey = (driverId+"").intern();
+                    RLock rLock = redissonClient.getLock(lockKey);
+                    rLock.lock();
+
+                    boolean idleFlag = isDriverOrderGoingOn(driverId) == 0;
                     if (!idleFlag) return false;
 
             /* 方式一 系统直接把订单分配给司机 */
@@ -122,6 +132,10 @@ public class OrderServiceImpl implements OrderService {
                     orderDb.setState(3);
                     orderDao.update(orderDb);
                     log.info("为订单"+orderId+"分配了司机"+driverId);
+
+                    /* 释放锁 */
+                    rLock.unlock();
+
                     return true;
                 }).collect(Collectors.toList());
 
