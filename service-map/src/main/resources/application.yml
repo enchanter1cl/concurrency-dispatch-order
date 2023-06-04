@@ -1,0 +1,10 @@
+server:
+  port: 8085
+
+spring:
+  application:
+    name: service-map
+
+amap:
+  key: a53cd63580fed87ba11c0c72e231801e
+  sid: 940397

@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.erato.taxi.service.order.dao.OrderDao">
+
+    <resultMap type="ltd.erato.taxi.service.order.entity.Order" id="OrderMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="passengerId" column="passenger_id" jdbcType="INTEGER"/>
+        <result property="passengerPhone" column="passenger_phone" jdbcType="VARCHAR"/>
+        <result property="driverId" column="driver_id" jdbcType="INTEGER"/>
+        <result property="driverPhone" column="driver_phone" jdbcType="VARCHAR"/>
+        <result property="orderTime" column="order_time" jdbcType="TIMESTAMP"/>
+        <result property="depLng" column="dep_lng" jdbcType="VARCHAR"/>
+        <result property="depLat" column="dep_lat" jdbcType="VARCHAR"/>
+        <result property="destLng" column="dest_lng" jdbcType="VARCHAR"/>
+        <result property="destLat" column="dest_lat" jdbcType="VARCHAR"/>
+        <result property="cancelTypeCode" column="cancel_type_code" jdbcType="INTEGER"/>
+        <result property="state" column="state" jdbcType="INTEGER"/>
+        <result property="gmtCreated" column="gmt_created" jdbcType="TIMESTAMP"/>
+        <result property="gmtModified" column="gmt_modified" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="OrderMap">
+        select
+          id, address, passenger_id, passenger_phone, driver_id, driver_phone, order_time, dep_lng, dep_lat, dest_lng, dest_lat, cancel_type_code, `state`, gmt_created, gmt_modified
+        from `order`
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="OrderMap">
+        select
+          id, address, passenger_id, passenger_phone, driver_id, driver_phone, order_time, dep_lng, dep_lat, dest_lng, dest_lat, cancel_type_code, state, gmt_created, gmt_modified
+        from order
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="passengerId != null">
+                and passenger_id = #{passengerId}
+            </if>
+            <if test="passengerPhone != null and passengerPhone != ''">
+                and passenger_phone = #{passengerPhone}
+            </if>
+            <if test="driverId != null">
+                and driver_id = #{driverId}
+            </if>
+            <if test="driverPhone != null and driverPhone != ''">
+                and driver_phone = #{driverPhone}
+            </if>
+            <if test="orderTime != null">
+                and order_time = #{orderTime}
+            </if>
+            <if test="depLng != null and depLng != ''">
+                and dep_lng = #{depLng}
+            </if>
+            <if test="depLat != null and depLat != ''">
+                and dep_lat = #{depLat}
+            </if>
+            <if test="destLng != null and destLng != ''">
+                and dest_lng = #{destLng}
+            </if>
+            <if test="destLat != null and destLat != ''">
+                and dest_lat = #{destLat}
+            </if>
+            <if test="cancelTypeCode != null">
+                and cancel_type_code = #{cancelTypeCode}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+            <if test="gmtCreated != null">
+                and gmt_created = #{gmtCreated}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified}
+            </if>
+        </where>
+        <!--limit #{pageable.offset}, #{pageable.pageSize}-->
+    </select>
+
+    <!--动态条件查询-->
+    <select id="isDriverOrderGoingOn" resultMap="OrderMap">
+        select
+        id, address, passenger_id, passenger_phone, driver_id, driver_phone, order_time, dep_lng, dep_lat, dest_lng, dest_lat, cancel_type_code, state, gmt_created, gmt_modified
+        from `order`
+        <where>
+            <if test="driverId != null">
+                and driver_id = #{driverId}
+            </if>
+<!--            <if test="state != null">-->
+                and (state=3 or state=4 or state=5 or state=6)
+<!--            </if>-->
+        </where>
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from order
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="passengerId != null">
+                and passenger_id = #{passengerId}
+            </if>
+            <if test="passengerPhone != null and passengerPhone != ''">
+                and passenger_phone = #{passengerPhone}
+            </if>
+            <if test="driverId != null">
+                and driver_id = #{driverId}
+            </if>
+            <if test="driverPhone != null and driverPhone != ''">
+                and driver_phone = #{driverPhone}
+            </if>
+            <if test="orderTime != null">
+                and order_time = #{orderTime}
+            </if>
+            <if test="depLng != null and depLng != ''">
+                and dep_lng = #{depLng}
+            </if>
+            <if test="depLat != null and depLat != ''">
+                and dep_lat = #{depLat}
+            </if>
+            <if test="destLng != null and destLng != ''">
+                and dest_lng = #{destLng}
+            </if>
+            <if test="destLat != null and destLat != ''">
+                and dest_lat = #{destLat}
+            </if>
+            <if test="cancelTypeCode != null">
+                and cancel_type_code = #{cancelTypeCode}
+            </if>
+            <if test="state != null">
+                and state = #{state}
+            </if>
+            <if test="gmtCreated != null">
+                and gmt_created = #{gmtCreated}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into order(address, passenger_id, passenger_phone, driver_id, driver_phone, order_time, dep_lng, dep_lat, dest_lng, dest_lat, cancel_type_code, state, gmt_created, gmt_modified)
+        values (#{address}, #{passengerId}, #{passengerPhone}, #{driverId}, #{driverPhone}, #{orderTime}, #{depLng}, #{depLat}, #{destLng}, #{destLat}, #{cancelTypeCode}, #{state}, #{gmtCreated}, #{gmtModified})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into order(address, passenger_id, passenger_phone, driver_id, driver_phone, order_time, dep_lng, dep_lat, dest_lng, dest_lat, cancel_type_code, state, gmt_created, gmt_modified)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.address}, #{entity.passengerId}, #{entity.passengerPhone}, #{entity.driverId}, #{entity.driverPhone}, #{entity.orderTime}, #{entity.depLng}, #{entity.depLat}, #{entity.destLng}, #{entity.destLat}, #{entity.cancelTypeCode}, #{entity.state}, #{entity.gmtCreated}, #{entity.gmtModified})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into order(address, passenger_id, passenger_phone, driver_id, driver_phone, order_time, dep_lng, dep_lat, dest_lng, dest_lat, cancel_type_code, state, gmt_created, gmt_modified)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.address}, #{entity.passengerId}, #{entity.passengerPhone}, #{entity.driverId}, #{entity.driverPhone}, #{entity.orderTime}, #{entity.depLng}, #{entity.depLat}, #{entity.destLng}, #{entity.destLat}, #{entity.cancelTypeCode}, #{entity.state}, #{entity.gmtCreated}, #{entity.gmtModified})
+        </foreach>
+        on duplicate key update
+        address = values(address),
+        passenger_id = values(passenger_id),
+        passenger_phone = values(passenger_phone),
+        driver_id = values(driver_id),
+        driver_phone = values(driver_phone),
+        order_time = values(order_time),
+        dep_lng = values(dep_lng),
+        dep_lat = values(dep_lat),
+        dest_lng = values(dest_lng),
+        dest_lat = values(dest_lat),
+        cancel_type_code = values(cancel_type_code),
+        state = values(state),
+        gmt_created = values(gmt_created),
+        gmt_modified = values(gmt_modified)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update `order`
+        <set>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="passengerId != null">
+                passenger_id = #{passengerId},
+            </if>
+            <if test="passengerPhone != null and passengerPhone != ''">
+                passenger_phone = #{passengerPhone},
+            </if>
+            <if test="driverId != null">
+                driver_id = #{driverId},
+            </if>
+            <if test="driverPhone != null and driverPhone != ''">
+                driver_phone = #{driverPhone},
+            </if>
+            <if test="orderTime != null">
+                order_time = #{orderTime},
+            </if>
+            <if test="depLng != null and depLng != ''">
+                dep_lng = #{depLng},
+            </if>
+            <if test="depLat != null and depLat != ''">
+                dep_lat = #{depLat},
+            </if>
+            <if test="destLng != null and destLng != ''">
+                dest_lng = #{destLng},
+            </if>
+            <if test="destLat != null and destLat != ''">
+                dest_lat = #{destLat},
+            </if>
+            <if test="cancelTypeCode != null">
+                cancel_type_code = #{cancelTypeCode},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="gmtCreated != null">
+                gmt_created = #{gmtCreated},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from order where id = #{id}
+    </delete>
+
+</mapper>
+

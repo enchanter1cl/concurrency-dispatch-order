@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ltd.erato.taxi.service.driver.dao.DriverUserDao">
+
+    <resultMap id="BaseResultMap" type="ltd.erato.taxi.service.driver.entity.DriverUser">
+        <!--@Table driver_user-->
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="vehicleNo" column="vehicle_no" jdbcType="VARCHAR"/>
+        <result property="tid" column="tid" jdbcType="VARCHAR"/>
+        <result property="address" column="address" jdbcType="VARCHAR"/>
+        <result property="driverName" column="driver_name" jdbcType="VARCHAR"/>
+        <result property="driverPhone" column="driver_phone" jdbcType="VARCHAR"/>
+        <result property="driverGender" column="driver_gender" jdbcType="INTEGER"/>
+        <result property="licenseId" column="license_id" jdbcType="VARCHAR"/>
+        <result property="contractCompany" column="contract_company" jdbcType="VARCHAR"/>
+        <result property="getDriverLicenseDate" column="get_driver_license_date" jdbcType="TIMESTAMP"/>
+        <result property="gmtCreated" column="gmt_created" jdbcType="TIMESTAMP"/>
+        <result property="gmtModified" column="gmt_modified" jdbcType="TIMESTAMP"/>
+        <result property="workState" column="work_state" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BaseResultMap">
+        select
+          id, vehicle_no, tid, address, driver_name, driver_phone, driver_gender, license_id, contract_company, get_driver_license_date, gmt_created, gmt_modified, work_state
+        from driver_user
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="BaseResultMap">
+        select
+          id, vehicle_no, tid, address, driver_name, driver_phone, driver_gender, license_id, contract_company, get_driver_license_date, gmt_created, gmt_modified, work_state
+        from driver_user
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="vehicleNo != null and vehicleNo != ''">
+                and vehicle_no = #{vehicleNo}
+            </if>
+            <if test="tid != null and tid != ''">
+                and tid = #{tid}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="driverName != null and driverName != ''">
+                and driver_name = #{driverName}
+            </if>
+            <if test="driverPhone != null and driverPhone != ''">
+                and driver_phone = #{driverPhone}
+            </if>
+            <if test="driverGender != null">
+                and driver_gender = #{driverGender}
+            </if>
+            <if test="licenseId != null and licenseId != ''">
+                and license_id = #{licenseId}
+            </if>
+            <if test="contractCompany != null and contractCompany != ''">
+                and contract_company = #{contractCompany}
+            </if>
+            <if test="getDriverLicenseDate != null">
+                and get_driver_license_date = #{getDriverLicenseDate}
+            </if>
+            <if test="gmtCreated != null">
+                and gmt_created = #{gmtCreated}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified}
+            </if>
+            <if test="workState != null">
+                and work_state = #{workState}
+            </if>
+        </where>
+        <!--limit #{pageable.offset}, #{pageable.pageSize}-->
+
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+          id, vehicle_no, tid, address, driver_name, driver_phone, driver_gender, license_id, contract_company, get_driver_license_date, gmt_created, gmt_modified, work_state
+        from taxi_driver.driver_user
+    </select>
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from driver_user
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="vehicleNo != null and vehicleNo != ''">
+                and vehicle_no = #{vehicleNo}
+            </if>
+            <if test="tid != null and tid != ''">
+                and tid = #{tid}
+            </if>
+            <if test="address != null and address != ''">
+                and address = #{address}
+            </if>
+            <if test="driverName != null and driverName != ''">
+                and driver_name = #{driverName}
+            </if>
+            <if test="driverPhone != null and driverPhone != ''">
+                and driver_phone = #{driverPhone}
+            </if>
+            <if test="driverGender != null">
+                and driver_gender = #{driverGender}
+            </if>
+            <if test="licenseId != null and licenseId != ''">
+                and license_id = #{licenseId}
+            </if>
+            <if test="contractCompany != null and contractCompany != ''">
+                and contract_company = #{contractCompany}
+            </if>
+            <if test="getDriverLicenseDate != null">
+                and get_driver_license_date = #{getDriverLicenseDate}
+            </if>
+            <if test="gmtCreated != null">
+                and gmt_created = #{gmtCreated}
+            </if>
+            <if test="gmtModified != null">
+                and gmt_modified = #{gmtModified}
+            </if>
+            <if test="workState != null">
+                and work_state = #{workState}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into driver_user(vehicle_no, tid, address, driver_name, driver_phone, driver_gender, license_id, contract_company, get_driver_license_date, gmt_created, gmt_modified, work_state)
+        values (#{vehicleNo}, #{tid}, #{address}, #{driverName}, #{driverPhone}, #{driverGender}, #{licenseId}, #{contractCompany}, #{getDriverLicenseDate}, #{gmtCreated}, #{gmtModified}, #{workState})
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into driver_user(vehicle_no, tid, address, driver_name, driver_phone, driver_gender, license_id, contract_company, get_driver_license_date, gmt_created, gmt_modified, work_state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+        (#{entity.vehicleNo}, #{entity.tid}, #{entity.address}, #{entity.driverName}, #{entity.driverPhone}, #{entity.driverGender}, #{entity.licenseId}, #{entity.contractCompany}, #{entity.getDriverLicenseDate}, #{entity.gmtCreated}, #{entity.gmtModified}, #{entity.workState})
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into driver_user(vehicle_no, tid, address, driver_name, driver_phone, driver_gender, license_id, contract_company, get_driver_license_date, gmt_created, gmt_modified, work_state)
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (#{entity.vehicleNo}, #{entity.tid}, #{entity.address}, #{entity.driverName}, #{entity.driverPhone}, #{entity.driverGender}, #{entity.licenseId}, #{entity.contractCompany}, #{entity.getDriverLicenseDate}, #{entity.gmtCreated}, #{entity.gmtModified}, #{entity.workState})
+        </foreach>
+        on duplicate key update
+        vehicle_no = values(vehicle_no),
+        tid = values(tid),
+        address = values(address),
+        driver_name = values(driver_name),
+        driver_phone = values(driver_phone),
+        driver_gender = values(driver_gender),
+        license_id = values(license_id),
+        contract_company = values(contract_company),
+        get_driver_license_date = values(get_driver_license_date),
+        gmt_created = values(gmt_created),
+        gmt_modified = values(gmt_modified),
+        work_state = values(work_state)
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update driver_user
+        <set>
+            <if test="vehicleNo != null and vehicleNo != ''">
+                vehicle_no = #{vehicleNo},
+            </if>
+            <if test="tid != null and tid != ''">
+                tid = #{tid},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="driverName != null and driverName != ''">
+                driver_name = #{driverName},
+            </if>
+            <if test="driverPhone != null and driverPhone != ''">
+                driver_phone = #{driverPhone},
+            </if>
+            <if test="driverGender != null">
+                driver_gender = #{driverGender},
+            </if>
+            <if test="licenseId != null and licenseId != ''">
+                license_id = #{licenseId},
+            </if>
+            <if test="contractCompany != null and contractCompany != ''">
+                contract_company = #{contractCompany},
+            </if>
+            <if test="getDriverLicenseDate != null">
+                get_driver_license_date = #{getDriverLicenseDate},
+            </if>
+            <if test="gmtCreated != null">
+                gmt_created = #{gmtCreated},
+            </if>
+            <if test="gmtModified != null">
+                gmt_modified = #{gmtModified},
+            </if>
+            <if test="workState != null">
+                work_state = #{workState},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from driver_user where id = #{id}
+    </delete>
+
+</mapper>
+
