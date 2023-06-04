@@ -123,7 +123,10 @@ public class OrderServiceImpl implements OrderService {
                     rLock.lock();
 
                     boolean idleFlag = isDriverOrderGoingOn(driverId) == 0;
-                    if (!idleFlag) return false;
+                    if (!idleFlag) {
+                        rLock.unlock();
+                        return false;
+                    }
 
             /* 方式一 系统直接把订单分配给司机 */
                     //查 driver 库查司机信息
