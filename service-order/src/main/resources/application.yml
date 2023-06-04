@@ -1,5 +1,5 @@
-server:
-  port: 8007
+#server:
+#  port: 8007
 
 spring:
   application:
@@ -14,6 +14,17 @@ spring:
 mybatis:
   mapper-locations: classpath:/mapper*/*.xml
 
-logging:
-  level:
-    ltd.erato.taxi.service.order.dao: debug
+#logging:
+#  level:
+#    ltd.erato.taxi.service.order.dao: debug
+
+---
+spring:
+  profiles: 8007
+server:
+  port: 8007
+---
+spring:
+  profiles: 8017
+server:
+  port: 8017

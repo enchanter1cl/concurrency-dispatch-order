@@ -22,6 +22,7 @@ public class TestController {
      */
     @GetMapping("/test-real-time-order/{orderId}")
     public ResponseResult testDispatchOrder(@PathVariable("orderId") Long orderId){
+        log.info("收到订单: "+orderId);
         return orderService.dispatchOrder(orderId);
     }
 }
