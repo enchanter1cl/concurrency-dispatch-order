@@ -81,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
      * @param orderId
      * @return
      */
-    public ResponseResult dispatchOrder(Long orderId) {
+    public synchronized ResponseResult dispatchOrder(Long orderId) {
 
         /* 获取乘客位置 */
         Order orderDb = queryById(orderId);
