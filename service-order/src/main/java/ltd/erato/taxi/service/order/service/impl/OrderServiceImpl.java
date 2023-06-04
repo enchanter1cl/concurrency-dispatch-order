@@ -119,12 +119,11 @@ public class OrderServiceImpl implements OrderService {
                     //查 driver 库查司机信息
                     orderDb.setDriverId(driverId);
                     orderDb.setDriverPhone("11111111111");
+                    orderDb.setState(3);
+                    orderDao.update(orderDb);
                     log.info("为订单"+orderId+"分配了司机"+driverId);
                     return true;
                 }).collect(Collectors.toList());
-
-        orderDb.setState(3);
-        orderDao.update(orderDb);
 
         if (availableDriverIds.isEmpty()) {
             return ResponseResult.fail("无可用司机");
