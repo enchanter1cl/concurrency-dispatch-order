@@ -1,6 +1,20 @@
 
 # 派单的并发问题
 
+## 项目结构
+
+```
+|-- api-passenger/ 乘客API服务，接收前端请求并分发
+|-- internal-common/ 公共模块
+|-- service-driver/ 司机服务
+|-- service-map/ 地图服务，主要用于请求高德开放API
+|-- service-order/ 订单服务
+|-- sql/ 建库建表和示例数据
+|-- jmeter/ 并发测试用到的 .jmx 文件示例
+|-- .run/ 在本地 IDE 跑两个 service-order 实例的配置, 可直接导入 idea 使用
+
+```
+
 ## 调用链路
 
 api-pasenger /test-real-time-order/{orderId}
