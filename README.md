@@ -17,15 +17,15 @@
 
 ## 调用链路
 
-api-pasenger /test-real-time-order/{orderId}
+[api-pasenger] "/test-real-time-order/{orderId}"
 
 ->
 
-service-order /test-real-time-order/{orderId}
+[service-order] "/test-real-time-order/{orderId}"
 
 ->
 
-service-map /terminal/aroundSearch
+[service-map] "/terminal/aroundSearch"
 
 ->
 
@@ -33,7 +33,7 @@ service-map /terminal/aroundSearch
 
 ->
 
-End
+[End]
 
 场景：
 
