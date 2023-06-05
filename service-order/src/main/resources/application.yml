@@ -9,7 +9,12 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/taxi_order?characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: username
-    password: password
+    password: notsosecure
+
+  redis:
+    host: localhost
+    port: 6379
+    password: notsosecure
 
 mybatis:
   mapper-locations: classpath:/mapper*/*.xml
