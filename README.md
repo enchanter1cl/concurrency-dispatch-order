@@ -1,3 +1,80 @@
+--- English ---
+
+# Concurrency Issues in Order Dispatch
+
+## Project Structure
+
+```
+|-- api-passenger/ Passenger API service, receives frontend requests and dispatches
+|-- internal-common/ Common modules
+|-- service-driver/ Driver service
+|-- service-map/ Map service, mainly used to request Gaode (AMap) Open API
+|-- service-order/ Order service
+|-- sql/ Database schema and sample data
+|-- jmeter/ .jmx files for concurrency testing
+|-- .run/ Configuration for running two service-order instances locally in the IDE, can be directly imported into IDEA
+
+```
+
+## Call Chain
+
+[api-passenger] "/test-real-time-order/{orderId}"
+
+->
+
+[service-order] "/test-real-time-order/{orderId}"
+
+->
+
+[service-map] "/terminal/aroundSearch"
+
+->
+
+Request to Gaode (AMap) Falcon Open API
+
+->
+
+[End]
+
+**Scenario:**
+
+Multiple passengers compete for Driver #8.
+
+## service-order Single Instance (v2.0.1)
+
+**Problem:**
+
+Using `/jmeter/Thread Group0.jmx` for concurrency testing in JMeter, Driver #8 was assigned to multiple orders.
+
+**Solution:**
+
+Add `synchronized`.
+
+## Multiple Instances (v2.0.2)
+
+**Problem:**
+
+Both service-order instances could acquire the lock. Driver #8 was assigned to two orders.
+
+**Solution:**
+
+Create a shared lock, i.e., a distributed lock.
+
+**Issue with v2.0.2:**
+
+Too much code was locked, causing deadlocks. Many request threads timed out, and Redis lockKey TTL kept extending.
+
+**Analysis:**
+
+Suppose thread2 acquired the lock, updated the order table, and then released the lock. Thread4 then acquired the lock but found no available drivers in the database, so it could not update the order table. The watchdog kept renewing the lock, preventing it from being released.
+
+## Multiple Instances (v2.0.3)
+
+**Improvement:**
+
+When no available drivers are found in the database, the lock must also be released to prevent deadlocks.
+
+--- 中文 ---
 
 # 派单的并发问题
 
